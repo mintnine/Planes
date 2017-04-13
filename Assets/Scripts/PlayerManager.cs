@@ -25,14 +25,26 @@ public class PlayerManager : MonoBehaviour {
 	public Transform leftgen;
 	public Transform rightgen;
 
+	private AudioSource asource;
+	[Header("Audio")]
+	[SerializeField]
+	private AudioClip enginesound;
+
 	// Use this for initialization
 	void Start () {
+
+
 		sessionManager = GameObject.Find ("Play Game").GetComponent<SessionManager> ();
 
 		upgen = transform.FindChild("GenPoints").FindChild ("upgen");
 		downgen = transform.FindChild("GenPoints").FindChild ("downgen");
 		rightgen = transform.FindChild("GenPoints").FindChild ("rightgen");
 		leftgen = transform.FindChild("GenPoints").FindChild ("leftgen");
+
+		//sound
+		asource = GetComponent<AudioSource> ();
+		asource.clip = enginesound;
+		asource.Play ();
 	}
 	
 	// Update is called once per frame

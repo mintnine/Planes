@@ -30,30 +30,34 @@ public class BadEnemyAI : MonoBehaviour {
 	public float turretwidth;
 	[SerializeField]
 	public GameObject explosionPrefab;
+	private SoundManager soundManager;
 	// Use this for initialization
 	void Start () {
+		soundManager = GameObject.Find ("Play Game").GetComponent<SoundManager> ();
 		rgBody = GetComponent<Rigidbody2D> ();
 		playerMissile = GameObject.Find ("Player");
 		StartCoroutine ("FireRate");
 
-
-		//
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		rgBody.velocity = rgBody.transform.up * speed;
 		FacePlayer ();
+		rgBody.velocity = rgBody.transform.up * speed;
 	}
 
 
 	void FacePlayer(){
 		playerMissile = GameObject.Find ("Player");
-		if (playerMissile != null) {
-			Vector3 dir = playerMissile.transform.position - transform.position;
-			float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-			Quaternion q = Quaternion.AngleAxis (angle -90, Vector3.forward);
-			transform.rotation = Quaternion.Slerp (transform.rotation, q, Time.deltaTime * rspeed);
+		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 10, transform.up,turretrange,1<<9);
+		if (hit.collider == null) {
+			if (playerMissile != null) {
+				Vector3 dir = playerMissile.transform.position - transform.position;
+				float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+				Quaternion q = Quaternion.AngleAxis (angle - 90, Vector3.forward);
+				transform.rotation = Quaternion.Slerp (transform.rotation, q, Time.deltaTime * rspeed);
+			}
 		}
 
 	}
@@ -71,38 +75,38 @@ public class BadEnemyAI : MonoBehaviour {
 		}
 	}
 
-	void AvoidAllyFront(){
-		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, transform.up, allyRange, 1 << 8);
-		if (hit.collider != null &&
-			hit.collider.gameObject != gameObject) {
-			transform.Rotate (new Vector3 (0, 0, -rspeed*2));
-		}
-	}
-
-	void AvoidAllyBack(){
-		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, -transform.up, allyRange, 1 << 8);
-		if (hit.collider != null &&
-			hit.collider.gameObject != gameObject) {
-			StartCoroutine (HardLeft (180));
-		}
-	}
-
-	void AvoidAllyLeft(){
-		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, -transform.right, allyRange, 1 << 8);
-		if (hit.collider != null &&
-			hit.collider.gameObject != gameObject) {
-			transform.Rotate (new Vector3 (0, 0, -rspeed*2));
-			Debug.Log("Performing Evasive Right");
-		}
-	}
-
-	void AvoidAllyRight(){
-		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, transform.right, allyRange, 1 << 8);
-		if (hit.collider != null &&
-			hit.collider.gameObject != gameObject) {
-			StartCoroutine (HardLeft (60));
-		}
-	}
+//	void AvoidAllyFront(){
+//		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, transform.up, allyRange, 1 << 8);
+//		if (hit.collider != null &&
+//			hit.collider.gameObject != gameObject) {
+//			transform.Rotate (new Vector3 (0, 0, -rspeed*2));
+//		}
+//	}
+//
+//	void AvoidAllyBack(){
+//		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, -transform.up, allyRange, 1 << 8);
+//		if (hit.collider != null &&
+//			hit.collider.gameObject != gameObject) {
+//			StartCoroutine (HardLeft (180));
+//		}
+//	}
+//
+//	void AvoidAllyLeft(){
+//		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, -transform.right, allyRange, 1 << 8);
+//		if (hit.collider != null &&
+//			hit.collider.gameObject != gameObject) {
+//			transform.Rotate (new Vector3 (0, 0, -rspeed*2));
+//			Debug.Log("Performing Evasive Right");
+//		}
+//	}
+//
+//	void AvoidAllyRight(){
+//		RaycastHit2D hit = Physics2D.CircleCast (transform.position, 30, transform.right, allyRange, 1 << 8);
+//		if (hit.collider != null &&
+//			hit.collider.gameObject != gameObject) {
+//			StartCoroutine (HardLeft (60));
+//		}
+//	}
 
 	IEnumerator FireRate(){
 		for (;;) {
@@ -122,7 +126,8 @@ public class BadEnemyAI : MonoBehaviour {
 			expl.transform.position = 
 				new Vector3 (transform.position.x,
 					transform.position.y, -30);
-			expl.transform.localScale = new Vector3 (0.6f, 0.6f, 1);
+			expl.transform.localScale = new Vector3 (0.4f, 0.4f, 1);
+			soundManager.Explosion (transform);
 			SessionManager.Enemies.Remove (gameObject);
 			SessionManager.score++;
 			Destroy (gameObject);
@@ -139,7 +144,7 @@ public class BadEnemyAI : MonoBehaviour {
 			expl.transform.position = 
 				new Vector3 (transform.position.x,
 					transform.position.y, -30);
-			expl.transform.localScale = new Vector3 (0.6f, 0.6f, 1);
+			expl.transform.localScale = new Vector3 (0.4f, 0.4f, 1);
 			SessionManager.Enemies.Remove (gameObject);
 			SessionManager.score++;
 			Destroy (gameObject);
@@ -147,10 +152,10 @@ public class BadEnemyAI : MonoBehaviour {
 	}
 
 
-	IEnumerator HardLeft(int degrees){
-		for (int i = 0; i < degrees; i++) {
-			yield return new WaitForSeconds (0.1666f);
-			transform.Rotate (new Vector3 (0, 0, rspeed));
-		}
-	}
+////	IEnumerator HardLeft(int degrees){
+////		for (int i = 0; i < degrees; i++) {
+////			yield return new WaitForSeconds (0.1666f);
+////			transform.Rotate (new Vector3 (0, 0, rspeed));
+////		}
+//	}
 }

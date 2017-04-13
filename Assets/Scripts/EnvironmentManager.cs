@@ -20,7 +20,7 @@ public class EnvironmentManager : MonoBehaviour {
 
 	IEnumerator CloudGenerationCall(){
 		for (;;) {
-			yield return new WaitForSeconds (2);
+			yield return new WaitForSeconds (1);
 			SetupGenerate ();
 		}
 	}
@@ -38,22 +38,13 @@ public class EnvironmentManager : MonoBehaviour {
 	void SetupGenerate(){
 		
 		GameObject playerinst = GameObject.Find ("Player");
-		if (playerinst != null) {
+		if (playerinst != null &&
+			EnoughSpaceAvailable()) {
 			PlayerManager playerscr = playerinst.GetComponent<PlayerManager> ();
 			Transform upgen = playerscr.upgen;
 			Transform downgen = playerscr.downgen;
 			Transform leftgen = playerscr.leftgen;
 			Transform rightgen = playerscr.rightgen;
-
-			Generate (upgen);
-			Generate (rightgen);
-			Generate (leftgen);
-			Generate (downgen);
-
-			Generate (upgen);
-			Generate (rightgen);
-			Generate (leftgen);
-			Generate (downgen);
 
 			Generate (upgen);
 			Generate (rightgen);
@@ -84,4 +75,21 @@ public class EnvironmentManager : MonoBehaviour {
 			}
 		}
 	}
+
+
+	#region LogicCalls
+
+	bool EnoughSpaceAvailable(){
+		int existingobjs = 0;
+		foreach (Transform child in transform) {
+			existingobjs++;
+		}
+		if (existingobjs > 20) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	#endregion
 }

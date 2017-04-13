@@ -8,9 +8,13 @@ public class SoundManager : MonoBehaviour {
 	private AudioSource source;
 	[SerializeField]
 	private GameObject audioPrefab;
+	[SerializeField]
+	private AudioClip enginesound;
+	[SerializeField]
+	private AudioClip explosion;
 	// Use this for initialization
 	void Start () {
-		source = GetComponent<AudioSource> ();
+
 	}
 	
 	// Update is called once per frame
@@ -22,6 +26,16 @@ public class SoundManager : MonoBehaviour {
 		AudioSource asource = snd.GetComponent<AudioSource> ();
 		asource.clip = bullethits [Random.Range(0,bullethits.Length-1)];
 		asource.Play ();
+		Destroy (snd, asource.clip.length + 0.3f);
+	}
+
+	public void Explosion(Transform location){
+		GameObject snd = Instantiate (audioPrefab);
+		snd.transform.position = location.position;
+		AudioSource asource = snd.GetComponent<AudioSource> ();
+		asource.clip = explosion;
+		asource.volume = 0.2f;
+		asource.Play();
 		Destroy (snd, asource.clip.length + 0.3f);
 	}
 }

@@ -53,7 +53,6 @@ public class UIManager : MonoBehaviour {
 		gameOver.GetComponent<Animator> ().Play ("Close");
 		gameOver.SetActive (false);
 		sessionManager.ResetGame ();
-
 	}
 
 	void RefreshBulletHits(){
