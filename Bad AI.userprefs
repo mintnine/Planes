@@ -1,0 +1,18 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerMissile.cs">
+    <Files>
+      <File FileName="Assets/Scripts/PlayerMissile.cs" Line="14" Column="15" />
+      <File FileName="Assets/Scripts/BadEnemyAI.cs" Line="40" Column="2" />
+      <File FileName="Assets/Scripts/PlayCamera.cs" Line="28" Column="1" />
+      <File FileName="Assets/Scripts/AnimationSelfDestruct.cs" Line="10" Column="27" />
+      <File FileName="Assets/Scripts/Indicators.cs" Line="31" Column="34" />
+      <File FileName="Assets/Scripts/SessionManager.cs" Line="30" Column="16" />
+      <File FileName="Assets/Scripts/UIManager.cs" Line="27" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
